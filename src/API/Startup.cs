@@ -28,6 +28,12 @@ namespace API
         {
             services.AddControllers();
             setUpSwagger(services);
+            services.AddApiVersioning(config =>
+            {
+                config.DefaultApiVersion = new ApiVersion(1,0);
+                config.AssumeDefaultVersionWhenUnspecified = true;
+                config.ReportApiVersions = true;
+            });
         }
 
         private void setUpSwagger(IServiceCollection services)
@@ -65,12 +71,12 @@ namespace API
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c =>
+            }
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
                 {
                     c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API v1");
                 });
-            }
 
             app.UseHttpsRedirection();
 
